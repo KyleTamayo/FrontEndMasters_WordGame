@@ -4,6 +4,8 @@ let word = "";
 
 const playerGuess = document.querySelector(".guess-1");
 
+const isLetter = (x) => /^[a-zA-Z]$/.test(x);
+
 async function getWord() {
 	const promise = await fetch("https://words.dev-apis.com/word-of-the-day");
 	const proceedPromise = await promise.json();
@@ -13,32 +15,32 @@ async function getWord() {
 async function checkGuess(guess) {
 	const response = await fetch("https://words.dev-apis.com/validate-word", {
 		method: "POST",
-		body: JSON.stringify({ "word": guess.toLowerCase() })
+		body: JSON.stringify({word: guess})
 	});
-	const parsedResponse = await JSON.parse(response);
+	console.log(response);
+	// console.log(response);
+	const parsedResponse = await response.json;
 	console.log(parsedResponse);
 }
 
 playerGuess.addEventListener('input', function (event) {
-	event.target.readOnly = true
 	event.target.value = event.target.value.toUpperCase()
-	guess += event.target.value
-	++count;
+	if (isLetter(event.target.value)) {
+		event.target.readOnly = true
+		guess += event.target.value
+		++count;
+	}
+	else
+		console.log("Not a letter!")
 
 	if (count == 5){
 		for (let i = 0; i < 5; ++i) {
 			if (word[i] != guess[i])
 				console.log("Fail")
 		}
-		checkGuess(guess)
-		guess = ""
+		checkGuess(guess.toLowerCase());
+		guess = "";
 	}
-
-
 });
 
-function main() {
-	getWord();
-}
-
-main();
+getWord();

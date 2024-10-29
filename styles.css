@@ -9,7 +9,7 @@ body {
 .guess-container {
 	display: flex;
 	flex-direction: column;
-	width: 400px;
+	width: 320px;
 	justify-content: space-around;
 }
 
