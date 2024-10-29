@@ -17,9 +17,8 @@ async function checkGuess(guess) {
 		method: "POST",
 		body: JSON.stringify({word: guess})
 	});
-	console.log(response);
-	// console.log(response);
-	const parsedResponse = await response.json;
+
+	const parsedResponse = await response.json();
 	console.log(parsedResponse);
 }
 
