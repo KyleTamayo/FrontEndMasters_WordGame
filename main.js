@@ -1,18 +1,43 @@
-const ANSWER_LENGTH = 5;
-const ROUNDS = 6;
-const INPUT_BOXES = document.querySelectorAll(".user-input");
-
 async function main() {
-	let row = 0;
+	const userInput = document.querySelectorAll(".user-input");
 	let guess = "";
-	let done = false;
+	let guessCount = 0;
 
 	const res = await fetch("https://words.dev-apis.com/word-of-the-day");
 	const { word: wordRes } = await res.json();
 	const word = wordRes.toUpperCase();
 	const wordParts = word.split("");
-	
-	console.log(word);	
+
+	const isLetter = (letter) => /^[a-zA-Z]$/.test(letter);
+
+	async function commit(guess) {
+		const res = await fetch("https://words.dev-apis.com/validate-word", {
+			method: "POST",
+			body: JSON.stringify({word: guess})
+		});
+
+		const parRes = await res.json();
+		
+		if (parRes["validWord"] == true){
+			alert("VICTORY");
+		}
+	}	
+
+	userInput.forEach( (inputBox) => {
+		inputBox.addEventListener('input', (e) => {
+			if (isLetter(e.target.value)) {
+				e.target.value = e.target.value.toUpperCase();
+				e.target.readOnly = true;
+				guess += e.target.value;
+				++guessCount;
+				console.log(e.target.value);
+			}
+
+			if (guessCount == 5) {
+				commit(guess);
+			}
+		});
+	});
 }
 
 main();
