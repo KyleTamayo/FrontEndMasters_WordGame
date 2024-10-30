@@ -1,42 +1,18 @@
-async function getWord() {
-	const promise = await fetch("https://words.dev-apis.com/word-of-the-day");
-	const proceedPromise = await promise.json();
-	return proceedPromise["word"];
-}
+const ANSWER_LENGTH = 5;
+const ROUNDS = 6;
+const INPUT_BOXES = document.querySelectorAll(".user-input");
 
-async function checkGuess(guess) {
-	const response = await fetch("https://words.dev-apis.com/validate-word", {
-		method: "POST",
-		body: JSON.stringify({word: guess})
-	});
-
-	const parsedResponse = await response.json();
-	return parsedResponse["validWord"];
-}
-
-function main(){
-	const word = getWord();
-	const inputBoxes = document.querySelectorAll(".user-input");
-
+async function main() {
+	let row = 0;
 	let guess = "";
-	let count = 0;
+	let done = false;
 
-	const isLetter = (x) => /^[a-zA-Z]$/.test(x);
-
-	for(let i = 0; i < inputBoxes.length; ++i) {
-		inputBoxes[i].addEventListener('input', (e) => {
-			if (isLetter(e.target.value)) {
-				e.target.readOnly = true;
-				guess += e.target.value;
-				++count;
-			}
-			else
-				console.log("Not a letter!");
-
-			e.target.value = e.target.value.toUpperCase();
-		});
-	}
+	const res = await fetch("https://words.dev-apis.com/word-of-the-day");
+	const { word: wordRes } = await res.json();
+	const word = wordRes.toUpperCase();
+	const wordParts = word.split("");
+	
+	console.log(word);	
 }
-
 
 main();

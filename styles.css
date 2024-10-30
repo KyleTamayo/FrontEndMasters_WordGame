@@ -6,10 +6,10 @@ body {
 	justify-items: center;
 }
 
-.guess-container {
+.input-container {
 	display: flex;
-	flex-direction: column;
-	width: 320px;
+	flex-flow: wrap;
+	max-width: 320px;
 	justify-content: space-around;
 }
 
